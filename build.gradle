@@ -36,3 +36,16 @@ configurations {
 shadowJar {
     archiveClassifier.set('dev')
 }
+
+//compileJava {
+//    options.compilerArgs += ['--enable-preview']
+//}
+//
+//tasks.withType(JavaExec) {
+//    jvmArgs += '--enable-preview'
+//}
+
+dependencies {
+    implementation("commons-io:commons-io:2.11.0")
+    implementation('org.slf4j:slf4j-log4j12:2.0.3')
+}
