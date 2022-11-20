@@ -1,0 +1,38 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+  id 'maven-publish'
+}
+
+sourceCompatibility = 19
+targetCompatibility = 19
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+javafx {
+    version = "19"
+    modules = [ 'javafx.controls' ]
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.github.justfoxx.app.Main'
+    }
+}
+
+application {
+    mainClass = 'io.github.justfoxx.app.Main'
+}
+
+configurations {
+    shadow.extendsFrom(runtimeClasspath)
+}
+
+shadowJar {
+    archiveClassifier.set('dev')
+}
