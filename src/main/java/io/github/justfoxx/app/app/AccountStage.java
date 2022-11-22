@@ -54,12 +54,25 @@ public class AccountStage {
 
         var hbox = new HBox();
         var gridPane = new GridPane();
-        gridPane.add(welcome, 0, 0, 3 ,1);
-        gridPane.add(choosePlayer, 0, 1, 1, 1);
+        gridPane.add(welcome, 0, 0, 2 ,1);
+        gridPane.add(choosePlayer, 0, 1, 2, 1);
         GridPane.setHalignment(choosePlayer, HPos.CENTER);
         GridPane.setHalignment(welcome, HPos.CENTER);
         for (int i = 0; i < buttons.size(); i++) {
             gridPane.add(buttons.get(i), 0, i+2, 1, 1);
+            //delete button
+            if(i == buttons.size()-1) continue;
+            var deleteButton = new Button("\uD83D\uDDD1️");
+            int finalI = i;
+            deleteButton.setOnMouseClicked(e -> {
+                Main.data.accounts.remove(finalI);
+                try {
+                    init(stage);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            gridPane.add(deleteButton, 1, i+2, 1, 1);
         }
         hbox.setAlignment(Pos.CENTER);
         hbox.getChildren().add(gridPane);
@@ -72,14 +85,14 @@ public class AccountStage {
         stage.show();
     }
 
-    private static void newPlayer(Stage stage, List<Button> buttons) {
+    private static void newPlayer(Stage stage, List<Button> buttons) throws Exception {
         var button = new Button("Create a new player!");
         button.onMouseClickedProperty().setValue(e -> {
-            var account = new Data.Account();
-            Main.data.accounts.add(account);
-            AccountStage.account = account;
+
             try {
-                GameStage.init(stage);
+                CreatingAccountStage.init(stage);
+                //GameStage.init(stage);
+
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
