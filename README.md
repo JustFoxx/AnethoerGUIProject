@@ -1,4 +1,4 @@
-# cookie-clicker
+# CookieClicker
 
 ## Introduction
 
