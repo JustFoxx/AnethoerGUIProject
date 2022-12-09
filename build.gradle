@@ -2,12 +2,16 @@ plugins {
   id 'java'
   id 'application'
   id 'org.openjfx.javafxplugin' version '0.0.9'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+  id 'com.github.johnrengelman.shadow' version '7.1.2'
   id 'maven-publish'
 }
 
 sourceCompatibility = 19
 targetCompatibility = 19
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
 
 repositories {
     mavenCentral()
@@ -21,12 +25,12 @@ javafx {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'io.github.justfoxx.app.Main'
+        attributes 'Main-Class': "${project.main}"
     }
 }
 
 application {
-    mainClass = 'io.github.justfoxx.app.Main'
+    mainClass = "${project.main}"
 }
 
 configurations {
@@ -34,7 +38,7 @@ configurations {
 }
 
 shadowJar {
-    archiveClassifier.set('dev')
+    archiveClassifier.set('fat')
 }
 
 //compileJava {
@@ -46,7 +50,18 @@ shadowJar {
 //}
 
 dependencies {
-    implementation("commons-io:commons-io:2.11.0")
-    implementation('org.slf4j:slf4j-log4j12:2.0.3')
-    implementation('com.google.code.gson:gson:2.10')
+    implementation("commons-io:commons-io:${project.commonsio_version}")
+    implementation("org.slf4j:slf4j-log4j12:${project.slf4j_version}")
+    implementation("com.google.code.gson:gson:${project.gson_version}")
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    // Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
+    it.options.release = 19
 }
